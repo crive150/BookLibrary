@@ -9,18 +9,17 @@ router.get('/', function(req, res, next) {
 module.exports = router;
 
 var mongoose = require('mongoose'); // Importing Mongoose
-
 var Book = mongoose.model('Book');
 var Transaction = mongoose.model('Transaction');
 
 /* REST Routes */
-// Creating GET route for retrieving posts, returns JSON list containing all posts
+// Creating GET route for retrieving books, returns JSON list containing all books
 // Use express get()  method to define URL for route (/posts)
 router.get('/books', function(req, res, next) { 
-  Book.find(function(err, books){  // Query database for all posts
+  Book.find(function(err, books){  // Query database for all books
     if(err){ return next(err); } // Pass error to error-handling function
 
-    res.json(books); // Send retrieved posts back to client
+    res.json(books); // Send retrieved books back to client
   });
 });
 
@@ -31,5 +30,49 @@ router.post('/books', function(req, res, next) {
     if(err){ return next(err); }
 
     res.json(book);
+  });
+});
+
+router.param('book', function(req, res, next, id){
+  var query = Book.findById(id);
+
+  query.exec(function(err, book){
+    if (err) { return next (err); }
+    if(!book) { return next(new Error('can\'t find book')); }
+
+    req.book = book;
+    return next();
+  });
+});
+
+// Creating GET route for retrieving transactions, returns JSON list containing all transactions
+// Use express get()  method to define URL for route (/posts)
+router.get('/transactions', function(req, res, next) { 
+  Transaction.find(function(err, transactions){  // Query database for all transactions
+    if(err){ return next(err); } // Pass error to error-handling function
+
+    res.json(transactions); // Send retrieved transactions back to client
+  });
+});
+
+router.post('/transactions', function(req, res, next) {
+  var transaction = new Transaction(req.body);
+
+  transaction.save(function(err, transaction){
+    if(err){ return next(err); }
+
+    res.json(transaction);
+  });
+});
+
+router.param('transaction', function(req, res, next, id){
+  var query = Transaction.findById(id);
+
+  query.exec(function(err, transaction){
+    if (err) { return next (err); }
+    if(!transaction) { return next(new Error('can\'t find transaction')); }
+
+    req.transaction = transaction;
+    return next();
   });
 });

@@ -1,10 +1,35 @@
 // Angular Factories/Services
-app.factory('books', [function(){
+app.factory('books', ['$http', function($http){
   var o = {
-    books: [
-    {title:'book 1', authorName: 'Gilbert Gotfried',ISBN: '4356', numOfBooks: 5, publishDate:'02/14/17',bookCat:'sci-fi', numBooksIssued: 0},
-    {title:'book 5', authorName: 'Gilbert Gotfried',ISBN: '4356', numOfBooks: 5, publishDate:'02/14/17',bookCat:'sci-fi', numBooksIssued: 0}
-    ]
+    books: [],
+    transactions: []
   };
+  
+  o.getAll = function() {
+    return $http.get('/books').success(function(data) {
+      angular.copy(data, o.books);
+    })
+  }
 
-}])
+  o.create = function(book) {
+    return $http.post('/books', book).success(function(data) {
+      o.books.push(data);
+    })
+  }
+
+  // Transactions
+  // o.getAll = function() {
+  //   return $http.get('/books').success(function(data) {
+  //     angular.copy(data, o.transactions);
+  //   })
+  // }
+
+  // o.create = function(book) {
+  //   return $http.post('/books', transaction).success(function(data) {
+  //     o.transactions.push(data);
+  //   })
+  // }
+
+
+  return o;
+}]);
