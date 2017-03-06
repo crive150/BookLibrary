@@ -1,0 +1,75 @@
+<html>
+  <head>
+    <title>My Library App!</title>
+
+    <!-- CSS stylesheets -->
+    <link href ="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+
+  </head>
+  <body ng-app="bookLibrary">
+   <div>
+    <ui-view></ui-view>
+  </div>
+
+
+    <script type="text/ng-template" id="/home.html">
+      <h1>Library Web App</h1>
+      
+      <div class="row">
+        <div class="col-sm-12 col-md-20">
+          <div class="panel-group">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <h3>Library Book List</h3>
+
+                  <div ng-repeat="book in books">
+                    {{book}} 
+                  </div>
+
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+
+      <div class="col-sm-4 col-md-4 row-sm-1">
+        <div class="panel-group">
+          <div class="panel panel-default">
+            <div class="panel-body">    
+              
+              <form ng-submit="add()">
+                <button type="submit" class="btn btn-primary">Add</button>
+              </form>
+
+              <form ng-submit="delete()">
+                <button type="submit" class="btn btn-primary">Delete</button>
+              </form>
+
+              <form ng-submit="edit()">
+                <button type="submit" class="btn btn-primary">Edit</button>
+              </form>
+        </div>
+      </div>
+      </div>
+    </div>
+   </script>
+
+
+  </body>
+  <!-- AngularJS External Libraries -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+  <script src= "http://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.2/angular-ui-router.js"></script>
+  
+  <!-- Angular App -->
+  <script src="/javascripts/angularApp.js"></script>
+  
+  <!-- Angular Controllers -->
+  <script src="/javascripts/controllers.js"></script>
+  
+  <!-- Angular Services -->
+  <script src="/javascripts/services.js"></script>
+
+  <!-- Angular Routes -->
+  <script src="/javascripts/angularRoutes.js"></script>
+
+</html>
