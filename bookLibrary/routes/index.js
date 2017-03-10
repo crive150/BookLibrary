@@ -17,12 +17,13 @@ var Transaction = mongoose.model('Transaction');
 // Use express get()  method to define URL for route (/posts)
 router.get('/books', function(req, res, next) { 
   Book.find(function(err, books){  // Query database for all books
-    if(err){ return next(err); } // Pass error to error-handling function
-
-    res.json(books); // Send retrieved books back to client
-  });
+    if(err){ return next(err); } // Pass error to error-handling function 
+    
+      res.json(books); // Send retrieved books back to client
+  });   
 });
 
+ // Creating book object
 router.post('/books', function(req, res, next) {
   var book = new Book(req.body);
 
@@ -33,6 +34,7 @@ router.post('/books', function(req, res, next) {
   });
 });
 
+//pre-loading post objects
 router.param('book', function(req, res, next, id){
   var query = Book.findById(id);
 
@@ -55,24 +57,3 @@ router.get('/transactions', function(req, res, next) {
   });
 });
 
-router.post('/transactions', function(req, res, next) {
-  var transaction = new Transaction(req.body);
-
-  transaction.save(function(err, transaction){
-    if(err){ return next(err); }
-
-    res.json(transaction);
-  });
-});
-
-router.param('transaction', function(req, res, next, id){
-  var query = Transaction.findById(id);
-
-  query.exec(function(err, transaction){
-    if (err) { return next (err); }
-    if(!transaction) { return next(new Error('can\'t find transaction')); }
-
-    req.transaction = transaction;
-    return next();
-  });
-});

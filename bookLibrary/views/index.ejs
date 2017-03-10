@@ -4,6 +4,8 @@
 
     <!-- CSS stylesheets -->
     <link href ="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href ="/stylesheets/style.css" rel="stylesheet">
+
 
   </head>
   <body ng-app="bookLibrary">
@@ -14,25 +16,27 @@
 
     <script type="text/ng-template" id="/home.html">
       <h1>Library Web App</h1>
-      
+     
       <div class="row">
         <div class="col-sm-12 col-md-20">
           <div class="panel-group">
             <div class="panel panel-default">
               <div class="panel-body">
                 <h3>Library Book List</h3>
-
-                  <div ng-repeat="book in books">
-                    {{ book }} 
-                  </div>
-
+            
+                   <ul ng-repeat="book in books" ng-click="setSelected(book)" ng-class="{selected: book === idSelectedBook}">
+                    <li>
+                      {{book}}
+                    </li>
+                   </ul>  
+                       
             </div>
           </div>
         </div>
         </div>
       </div>
 
-      <div class="col-sm-4 col-md-4 row-sm-1">
+      <div class="col-sm-12 col-md-20">
         <div class="panel-group">
           <div class="panel panel-default">
             <div class="panel-body">    
@@ -48,6 +52,13 @@
               <form ng-submit="edit()">
                 <button type="submit" class="btn btn-primary">Edit</button>
               </form>
+
+              <div class="selected">
+                {{ idSelectedBook }}
+              </div>
+              <div class="selected">
+                {{idSelectedAddedBook}}
+              </div>
         </div>
       </div>
      </div>
@@ -58,18 +69,21 @@
           <div class="panel-group">
             <div class="panel panel-default">
               <div class="panel-body">
-                <h3>Library Transaction List</h3>
+                <h3>Library Transaction book List</h3>
 
-                  <div ng-repeat="transaction in transactions">
-                    {{ transaction }} 
-                  </div>
+                  <ul ng-repeat="book in added" ng-click="setSelectedAdded(book)" ng-class"{selected: book === idSelectedAddedBook}">
+                    <li>
+                      {{ book }}
+                    </li>
+
+                   </ul>  
+                    
 
             </div>
           </div>
         </div>
         </div>
       </div>
-
    </script>
 
 

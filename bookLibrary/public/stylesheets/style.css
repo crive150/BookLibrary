@@ -6,3 +6,25 @@ body {
 a {
   color: #00B7FF;
 }
+
+ul {
+  cursor: pointer;
+  clear: both;
+  list-style-type: none;
+  width: 350px;
+}
+
+li {
+  float: left;
+}
+
+li.created { 
+  width: 100px;
+  cursor: pointer;
+}
+
+
+
+.selected {
+  background-color: lightgrey;
+}

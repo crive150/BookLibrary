@@ -1,8 +1,8 @@
 // Angular Factories/Services
+// Returns contents of JSON file to the Controller
 app.factory('books', ['$http', function($http){
   var o = {
-    books: [],
-    transactions: []
+    books: []
   };
   
   o.getAll = function() {
@@ -17,19 +17,11 @@ app.factory('books', ['$http', function($http){
     })
   }
 
-  // Transactions
-  // o.getAll = function() {
-  //   return $http.get('/books').success(function(data) {
-  //     angular.copy(data, o.transactions);
-  //   })
-  // }
-
-  // o.create = function(book) {
-  //   return $http.post('/books', transaction).success(function(data) {
-  //     o.transactions.push(data);
-  //   })
-  // }
-
+  o.get = function (id) { 
+    return $http.get('/books' + id).then(function (res){
+      return res.data;
+    })
+  }
 
   return o;
 }]);

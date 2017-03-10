@@ -4,12 +4,25 @@ app.controller('MainCtrl', [
 'books',
 function($scope, books){
   $scope.books = books.books;
-  $scope.transactions = books.transactions;
+  $scope.added = [];
+ 
   //transaction: {bookID:'book 1', transDate: '02/14/17', transType: 'return', Date:'02/14/17'}
   // Adds to transaction list
-  $scope.add = function(book) {
-    book.numOfBooks -= 1;
-    book.numBooksIssued += 1;
+  $scope.idSelectedBook = null;
+  $scope.idSelectedAddedBook = null;
+
+  $scope.setSelected = function (idSelectedBook) {
+    $scope.idSelectedBook = idSelectedBook;
+  }
+
+  $scope.setSelectedAdded = function (idSelectedAddedBook) {
+    $scope.idSelectedAddedBook = idSelectedAddedBook;
+  }
+
+  $scope.add = function(idSelectedBook) {
+    $scope.added.push({book: $scope.idSelectedBook});
+    $scope.idSelectedBook.numOfBooks -= 1;
+    $scope.idSelectedBook.numBooksIssued += 1;
   }
 
   // Delete from transaction list
@@ -18,7 +31,7 @@ function($scope, books){
     book.numBooksIssued -= 1;
   }
   // Edit from transaction list
-  $scope.edit = function(book) {
-    
+  $scope.edit = function(book) { 
   };
+
 }]);

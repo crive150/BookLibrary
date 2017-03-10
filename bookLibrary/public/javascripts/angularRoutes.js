@@ -17,7 +17,6 @@ app.config([
                         return books.getAll();
                     }]
                   }
-                });
-                          
+                });                     
       $urlRouterProvider.otherwise('home');
 }]);
