@@ -24,17 +24,17 @@
               <div class="panel-body">
                 <h3>Library Book List</h3>
             
-                   <ul ng-repeat="book in books" ng-click="setSelected(book)" ng-class="{selected: book === idSelectedBook}">
+                   <ul ng-repeat="book in books" ng-click="setSelected(book)" ng-class="{ selected: book === SelectedBook}">
                     <li>
-                      {{book}}
+                      {{ book }}
                     </li>
                    </ul>  
                        
             </div>
           </div>
         </div>
-        </div>
       </div>
+     </div>
 
       <div class="col-sm-12 col-md-20">
         <div class="panel-group">
@@ -42,22 +42,27 @@
             <div class="panel-body">    
               
               <form ng-submit="add()">
+                <input type="text" placeholder="Title" ng-model="title"></input>
+                <input type="text" placeholder="Name of Author" ng-model="authorName"></input>
+                <input type="text" placeholder="ISBN" ng-model="ISBN"></input>
+                <input type="text" placeholder="Number of Books" ng-model="numOfBooks"></input>
+                <input type="text" placeholder="Date published" ng-model="publishDate"></input>
+                <input type="text" placeholder="Book Category" ng-model="bookCat"></input>
+                <input type="text" placeholder="Number of Books Issued" ng-model="numBooksIssued"></input>
                 <button type="submit" class="btn btn-primary">Add</button>
               </form>
 
-              <form ng-submit="delete()">
-                <button type="submit" class="btn btn-primary">Delete</button>
-              </form>
+
+                <button class="btn btn-danger" ng-click="delete()">Delete</button>
+
 
               <form ng-submit="edit()">
+                <input type="text" placeholder="Number of Books" ng-model="numOfBooks"></input>
                 <button type="submit" class="btn btn-primary">Edit</button>
               </form>
 
-              <div class="selected">
-                {{ idSelectedBook }}
-              </div>
-              <div class="selected">
-                {{idSelectedAddedBook}}
+              <div>
+                {{ SelectedBook.title }}
               </div>
         </div>
       </div>
@@ -71,11 +76,10 @@
               <div class="panel-body">
                 <h3>Library Transaction book List</h3>
 
-                  <ul ng-repeat="book in added" ng-click="setSelectedAdded(book)" ng-class"{selected: book === idSelectedAddedBook}">
+                  <ul ng-repeat="book in added track by $index">
                     <li>
                       {{ book }}
                     </li>
-
                    </ul>  
                     
 

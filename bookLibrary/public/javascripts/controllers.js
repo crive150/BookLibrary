@@ -3,35 +3,87 @@ app.controller('MainCtrl', [
 '$scope',
 'books',
 function($scope, books){
+  
   $scope.books = books.books;
-  $scope.added = [];
- 
+  
   //transaction: {bookID:'book 1', transDate: '02/14/17', transType: 'return', Date:'02/14/17'}
-  // Adds to transaction list
-  $scope.idSelectedBook = null;
-  $scope.idSelectedAddedBook = null;
-
-  $scope.setSelected = function (idSelectedBook) {
-    $scope.idSelectedBook = idSelectedBook;
+  // Adds to book to list of books
+  $scope.add = function() {
+    if(!$scope.title || $scope.title === '') { return; }
+    books.create({ // Saves book to server
+      title: $scope.title,
+      authorName: $scope.authorName,
+      ISBN: $scope.ISBN,
+      numOfBooks: $scope.numOfBooks,
+      publishDate: $scope.publishDate,
+      bookCat: $scope.bookCat,
+      numBooksIssued: $scope.numBooksIssued
+    });
+    $scope.title = '';
+    $scope.authorName ='';
+    $scope.ISBN ='';
+    $scope.numOfBooks ='';
+    $scope.publishDate ='';
+    $scope.bookCat = '';
+    $scope.numBooksIssued = '';
   }
 
-  $scope.setSelectedAdded = function (idSelectedAddedBook) {
-    $scope.idSelectedAddedBook = idSelectedAddedBook;
+  $scope.SelectedBook = null;
+  $scope.setSelected = function (SelectedBook) {
+    $scope.SelectedBook = SelectedBook;
+    console.log($scope.SelectedBook._id);
   }
 
-  $scope.add = function(idSelectedBook) {
-    $scope.added.push({book: $scope.idSelectedBook});
-    $scope.idSelectedBook.numOfBooks -= 1;
-    $scope.idSelectedBook.numBooksIssued += 1;
+  // Delete the selected book
+  $scope.delete = function() {  
+   // Holds index to delete from service and immediately update client-side
+   var index;
+   for(var i = 0; i < books.books.length; i++) {
+    if(books.books[i]._id === $scope.SelectedBook._id) {
+      index = i;
+      }
+    } // Passes index, id to service then id to routes to delete from DB
+  books.delete($scope.SelectedBook._id, index); 
+  $scope.SelectedBook = null;
   }
-
-  // Delete from transaction list
-  $scope.delete = function(book) {
-    book.numOfBooks += 1;
-    book.numBooksIssued -= 1;
-  }
-  // Edit from transaction list
-  $scope.edit = function(book) { 
+  // Edit number of books
+  $scope.edit = function() { 
+  var index;
+   for(var i = 0; i < books.books.length; i++) {
+    if(books.books[i]._id === $scope.SelectedBook._id) {
+      index = i;
+      }
+    } // Passes index, id to service then id to routes to delete from DB
+  books.edit($scope.SelectedBook._id, index, $scope.numOfBooks); 
+  $scope.SelectedBook = null; 
   };
+
+  // Adds book to bottom list until their quantity is ran out
+  // $scope.added = [];
+  // $scope.add = function(SelectedBook) {
+  //   if(SelectedBook.numOfBooks === 0){
+  //     window.alert(SelectedBook.numOfBooks);
+  //   }
+  //   else {
+  //     var exists = false;
+  //     for(var i = 0; i < $scope.added.length; i++) {
+  //       if($scope.added[i].title == SelectedBook.title) {
+  //         exists = true;
+  //       }
+  //     }
+  //     if(!exists) {
+  //       $scope.added.push($scope.SelectedBook);
+  //       $scope.SelectedBook.numOfBooks -= 1;
+  //       $scope.SelectedBook.numBooksIssued += 1;
+  //       console.log("Added new book");
+  //     }
+  //     else {
+  //       $scope.SelectedBook.numOfBooks -= 1;
+  //       $scope.SelectedBook.numBooksIssued += 1;
+  //       console.log("Added quantity");
+  //     }
+  //   }
+  //   console.log($scope.added.toString());
+  // }
 
 }]);

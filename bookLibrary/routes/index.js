@@ -9,6 +9,7 @@ router.get('/', function(req, res, next) {
 module.exports = router;
 
 var mongoose = require('mongoose'); // Importing Mongoose
+var ObjectId = require('mongoose').Types.ObjectId;
 var Book = mongoose.model('Book');
 var Transaction = mongoose.model('Transaction');
 
@@ -29,6 +30,26 @@ router.post('/books', function(req, res, next) {
 
   book.save(function(err, book){
     if(err){ return next(err); }
+
+    res.json(book);
+  });
+});
+
+// Delete selected book from the list by finding by ObjectId which is the unique value assigned
+router.delete('/books/:id', function(req, res, next) {
+  var id = req.params.id;
+  console.log("deleting " + id);
+
+  Book.remove({_id: new ObjectId(id)}, function(err, result) {
+    console.log("Deleted.");
+    res.send(result);
+  });
+});
+
+router.put('/books/:id', function(req, res, next){
+  var id = req.params.id;
+  req.book.edit(function(err, book){
+    if (err) { return next(err); }
 
     res.json(book);
   });

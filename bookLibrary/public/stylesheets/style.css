@@ -11,20 +11,13 @@ ul {
   cursor: pointer;
   clear: both;
   list-style-type: none;
-  width: 350px;
+  width: 90%;
 }
 
 li {
   float: left;
 }
 
-li.created { 
-  width: 100px;
-  cursor: pointer;
-}
-
-
-
-.selected {
-  background-color: lightgrey;
+.selected li{
+   background-color: yellow;
 }

@@ -10,8 +10,8 @@ var BookSchema = new mongoose.Schema({
     numBooksIssued: {type: Number, default: 0},
 });
 
-BookSchema.methods.issue = function(cb) {
-    this.numBooksIssued += 1;
+BookSchema.methods.edit = function(cb) {
+    this.numBooksIssued = cb;
     this.save(cb);
 }
 
