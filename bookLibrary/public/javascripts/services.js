@@ -1,5 +1,7 @@
 // Angular Factories/Services
 // Returns contents of JSON file to the Controller
+
+// Books factory
 app.factory('books', ['$http', function($http){
   var o = {
     books: []
@@ -17,9 +19,19 @@ app.factory('books', ['$http', function($http){
     })
   };
 
+  // Begins the edit on the desired book
   o.edit = function(id) {
-     $http.get('/books/' + id).then(function(res){     
+    console.log("Editing book with id:" + id);
+     return $http.get('/books/' + id).then(function(res){     
       return res.data;
+    })
+  };
+
+  // Complete change by changing the value through the route
+  o.update = function(id, book, index) {
+    console.log("Updating book in factory");
+    return $http.put('/books/' + id, book).success(function(res){
+      o.books[index].numOfBooks = book.numOfBooks;
     })
   };
 
@@ -31,4 +43,9 @@ app.factory('books', ['$http', function($http){
   };
 
   return o;
+}]);
+
+// Transactions factory
+app.factory('transactions', ['$http', function($http){
+
 }]);

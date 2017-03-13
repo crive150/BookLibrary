@@ -17,7 +17,7 @@
     <script type="text/ng-template" id="/home.html">
       <h1>Library Web App</h1>
      
-     
+     <a href="/transactions"><button type="submit" class="btn btn-info"> Transactions list</button></a>
       <div class="panel-group">
         <div class="panel">
           <div class="panel-body">
@@ -46,20 +46,20 @@
                     <td>{{ book.numBooksIssued }}</td>                   
                   </tr>  
                    <tr> <!-- Row below is for input fields for adding a book -->
-                      <td><input class="form-control" placeholder="Title" ng-model="title"></input></td>
-                      <td><input class="form-control" placeholder="Name of Author" ng-model="authorName"></input></td>
-                      <td><input class="form-control" placeholder="ISBN" ng-model="ISBN"></input></td>
-                      <td><input class="form-control" placeholder="Number of Books" ng-model="numOfBooks"></input></td>
-                      <td><input class="form-control" placeholder="Date Published" ng-model="publishDate"></input></td>
-                      <td><input class="form-control" placeholder="Category" ng-model="bookCat"></input></td>
-                      <td><input class="form-control" placeholder="Books Issued" ng-model="numBooksIssued"></input></td>
+                      <td><input class="form-control" placeholder="Title" ng-model="book.title"></input></td>
+                      <td><input class="form-control" placeholder="Name of Author" ng-model="book.authorName"></input></td>
+                      <td><input class="form-control" placeholder="ISBN" ng-model="book.ISBN"></input></td>
+                      <td><input class="form-control" placeholder="Number of Books" ng-model="book.numOfBooks"></input></td>
+                      <td><input class="form-control" placeholder="Date Published" ng-model="book.publishDate"></input></td>
+                      <td><input class="form-control" placeholder="Category" ng-model="book.bookCat"></input></td>
+                      <td><input class="form-control" placeholder="Books Issued" ng-model="book.numBooksIssued"></input></td>
                       <td><button ng-click="add()" class="btn btn-primary">Add</button></td>
                   </tr>
                   <tr>
                     <td></td>
                     <td><button class="btn btn-danger" ng-click="delete()">Delete</button></td>
-                    <td><button class="btn btn-warning" ng-click="edit()">Edit</button></td>   
-                    <td><button class="btn btn-info" ng-click="update()">Update</button></td>
+                    <td></td>   
+                    <td><button class="btn btn-warning" ng-click="edit()">Edit</button><button class="btn btn-info" ng-click="update()">Update</button></td>
                   </tr>
                   <tr>
                     <td>Currently Selected:</td> 
@@ -75,12 +75,17 @@
                   </tr>      
                 </tbody>
               <table>      
+        </div>
       </div>
-    </div>
-  </div>
-    
+    </div>  
+   </script>
 
-    
+   <script type="text/ng-template" id="/transactions.html">
+    <h3>Transactions list page</h3>
+    <table class="table">
+
+    </table>
+
    </script>
 
 

@@ -1,5 +1,7 @@
 // Angular Controllers
-app.controller('MainCtrl', [
+
+// Controller for Books list
+app.controller('BookCtrl', [
 '$scope',
 'books',
 function($scope, books){
@@ -9,35 +11,51 @@ function($scope, books){
   //transaction: {bookID:'book 1', transDate: '02/14/17', transType: 'return', Date:'02/14/17'}
   // Adds to book to list of books
   $scope.add = function() {
-    if(!$scope.title || $scope.title === '') { return; }
+    if(!$scope.book.title || $scope.book.title === '') { 
+      window.alert("Your book requires a title!");
+      return; 
+      }
+    if($scope.book.numOfBooks < 0 || $scope.book.numBooksIssued < 0){
+      window.alert("Number of books or number of books issued cannot be negative.");
+      return;
+    }
+    if($scope.book.numOfBooks < $scope.book.numBooksIssued){
+      window.alert("Number of books cannot be less than number of books issued.");
+      return;
+    }
     books.create({ // Saves book to server
-      title: $scope.title,
-      authorName: $scope.authorName,
-      ISBN: $scope.ISBN,
-      numOfBooks: $scope.numOfBooks,
-      publishDate: $scope.publishDate,
-      bookCat: $scope.bookCat,
-      numBooksIssued: $scope.numBooksIssued
+      title: $scope.book.title,
+      authorName: $scope.book.authorName,
+      ISBN: $scope.book.ISBN,
+      numOfBooks: $scope.book.numOfBooks,
+      publishDate: $scope.book.publishDate,
+      bookCat: $scope.book.bookCat,
+      numBooksIssued: $scope.book.numBooksIssued
     });
-    $scope.title = '';
-    $scope.authorName ='';
-    $scope.ISBN ='';
-    $scope.numOfBooks ='';
-    $scope.publishDate ='';
-    $scope.bookCat = '';
-    $scope.numBooksIssued = '';
-  }
-
+    $scope.book.title = '';
+    $scope.book.authorName ='';
+    $scope.book.ISBN ='';
+    $scope.book.numOfBooks ='';
+    $scope.book.publishDate ='';
+    $scope.book.bookCat = '';
+    $scope.book.numBooksIssued = '';
+  };
+  // Below is the book selected on by click on the row which then highlights it
   $scope.SelectedBook = null;
   $scope.setSelected = function (SelectedBook) {
     $scope.SelectedBook = SelectedBook;
     console.log($scope.SelectedBook._id);
-  }
+  };
 
   // Delete the selected book
   $scope.delete = function() {
-    if($scope.SelectedBook === null){
-      window.alert("You have not selected any book yet!");
+    // if($scope.SelectedBook.numBooksIssued != 0){ 
+    //   window.alert("Number of books issued must be 0 before taking this action.");
+    //   return;
+    // }
+    if($scope.SelectedBook == null){
+      window.alert("Please select a book before taking this action.");
+      return;
     }
     else {
       // Holds index to delete from service and immediately update client-side
@@ -50,46 +68,55 @@ function($scope, books){
         books.delete($scope.SelectedBook._id, index); 
         $scope.SelectedBook = null;
     }
-  }
-  // Edit number of books
+  };
+
+  // Edit number of books. This method caputes the book details and places them in the boxes for editing
   $scope.edit = function() { 
-    if($scope.SelectedBook === null){
-      window.alert("You have not selected any book yet!");
+    if($scope.SelectedBook == null){
+      window.alert("Please select a book before taking this action.");
     }
     else {
-      console.log("Editing: "+$scope.SelectedBook._id);
-      console.log(books.edit($scope.SelectedBook._id));
-      //$scope.numOfBook = 
-      
+      books.edit($scope.SelectedBook._id).then(function(data){
+        $scope.book = data;
+      });  
     }
   };
 
-  // Adds book to bottom list until their quantity is ran out
-  // $scope.added = [];
-  // $scope.add = function(SelectedBook) {
-  //   if(SelectedBook.numOfBooks === 0){
-  //     window.alert(SelectedBook.numOfBooks);
-  //   }
-  //   else {
-  //     var exists = false;
-  //     for(var i = 0; i < $scope.added.length; i++) {
-  //       if($scope.added[i].title == SelectedBook.title) {
-  //         exists = true;
-  //       }
-  //     }
-  //     if(!exists) {
-  //       $scope.added.push($scope.SelectedBook);
-  //       $scope.SelectedBook.numOfBooks -= 1;
-  //       $scope.SelectedBook.numBooksIssued += 1;
-  //       console.log("Added new book");
-  //     }
-  //     else {
-  //       $scope.SelectedBook.numOfBooks -= 1;
-  //       $scope.SelectedBook.numBooksIssued += 1;
-  //       console.log("Added quantity");
-  //     }
-  //   }
-  //   console.log($scope.added.toString());
-  // }
+  // Update method updates the database with the new value for number of books in the text box.
+  $scope.update = function() {
+    if($scope.book == null) {
+      window.alert("Please select a book and then hit edit before hitting update.");
+    }
+    else {
+      // Holds index to modify array from service and immediately update client-side
+        var index;
+        for(var i = 0; i < books.books.length; i++) {
+          if(books.books[i]._id === $scope.book._id) {
+            index = i;
+            }
+          }
+      if($scope.book.numOfBooks < $scope.book.numBooksIssued){
+        window.alert("Number of books cannot be less than number of books issued.");
+        return;
+      }
+      books.update($scope.book._id, $scope.book ,index);
+      $scope.book = null;
+      $scope.SelectedBook = null;
+    }
+  };
+
+  $scope.issue = function (){
+
+  };
+
+}]);
+
+
+// Controller for Transactions list
+app.controller('TransCtrl', [
+'$scope',
+'transactions',
+function($scope, transactions) {
+  //$scope.transactions = transactions.transactions;
 
 }]);

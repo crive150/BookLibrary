@@ -11,12 +11,22 @@ app.config([
                   .state('home', {
                   url: '/home',
                   templateUrl: '/home.html',
-                  controller: 'MainCtrl',
+                  controller: 'BookCtrl',
                   resolve: { // Resolve is used because anytime home state is entered, it queries for all books
                      bookPromise: ['books', function(books) { // from the backend before the state finished loading.
                         return books.getAll();
                     }]
                   }
-                });                     
+                })  
+                .state('transactions', {
+                  url: '/transactions',
+                  templateUrl: '/transactions.html',
+                  controller: 'TransCtrl',
+                  // resolve: { // Resolve is used because anytime home state is entered, it queries for all books
+                  //    transactionPromise: ['transactions', function(books) { // from the backend before the state finished loading.
+                  //       return transactions.getAll();
+                  //   }]
+                  // }
+                })                   
       $urlRouterProvider.otherwise('home');
 }]);

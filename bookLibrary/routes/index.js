@@ -26,12 +26,24 @@ router.get('/books', function(req, res, next) {
 
  // Creating book object
 router.post('/books', function(req, res, next) {
+  
   var book = new Book(req.body);
-  console.log("Adding to db");
   book.save(function(err, book){
     if(err){ return next(err); }
-
+    console.log("New book created");
     res.json(book);
+  });
+});
+
+
+// For editing the number of books of a selected book in the database
+router.put('/books/:id', function(req, res, next){
+  var id = req.params.id;
+  console.log("Book being edited in express route: "+ req.body.numOfBooks);
+  Book.findOneAndUpdate({_id: new ObjectId(id)},{$set:{numOfBooks: req.body.numOfBooks}},{new : true},
+  function(err, result) {
+    if(err){ return next(err); }
+    res.json(result);
   });
 });
 
@@ -40,7 +52,7 @@ router.delete('/books/:id', function(req, res, next) {
   var id = req.params.id;
 
   Book.remove({_id: new ObjectId(id)}, function(err, result) {
-    console.log("Deleted.");
+    console.log("Deleted book with id: " + id);
     res.send(result);
   });
 });
