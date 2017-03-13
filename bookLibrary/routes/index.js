@@ -27,7 +27,7 @@ router.get('/books', function(req, res, next) {
  // Creating book object
 router.post('/books', function(req, res, next) {
   var book = new Book(req.body);
-
+  console.log("Adding to db");
   book.save(function(err, book){
     if(err){ return next(err); }
 

@@ -11,7 +11,7 @@ app.factory('books', ['$http', function($http){
     })
   };
   // Creating a book
-  o.create = function(book) {
+  o.create = function(book) { 
     return $http.post('/books', book).success(function(data) {
       o.books.unshift(data); // .unshift method adds to the beginning of the array
     })

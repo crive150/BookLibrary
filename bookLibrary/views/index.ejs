@@ -44,22 +44,19 @@
                     <td>{{ book.publishDate }}</td>
                     <td>{{ book.bookCat }}</td>
                     <td>{{ book.numBooksIssued }}</td>                   
-                  </tr> 
-                    
-                   <tr>
-                    <form ng-submit="add()">
-                      <td><input type="text" placeholder="Title" ng-model="title"></input></td>
-                      <td><input type="text" placeholder="Name of Author" ng-model="authorName"></input></td>
-                      <td><input type="text" placeholder="ISBN" ng-model="ISBN"></input></td>
-                      <td><input type="text" placeholder="Number of Books" ng-model="numOfBooks"></input></td>
-                      <td><input type="text" placeholder="Date published" ng-model="publishDate"></input></td>
-                      <td><input type="text" placeholder="Book Category" ng-model="bookCat"></input></td>
-                      <td><input type="text" placeholder="Number of Books Issued" ng-model="numBooksIssued"></input></td>
-                      <td></td>
-                    </form>
+                  </tr>  
+                   <tr> <!-- Row below is for input fields for adding a book -->
+                      <td><input class="form-control" placeholder="Title" ng-model="title"></input></td>
+                      <td><input class="form-control" placeholder="Name of Author" ng-model="authorName"></input></td>
+                      <td><input class="form-control" placeholder="ISBN" ng-model="ISBN"></input></td>
+                      <td><input class="form-control" placeholder="Number of Books" ng-model="numOfBooks"></input></td>
+                      <td><input class="form-control" placeholder="Date Published" ng-model="publishDate"></input></td>
+                      <td><input class="form-control" placeholder="Category" ng-model="bookCat"></input></td>
+                      <td><input class="form-control" placeholder="Books Issued" ng-model="numBooksIssued"></input></td>
+                      <td><button ng-click="add()" class="btn btn-primary">Add</button></td>
                   </tr>
                   <tr>
-                    <td><button type="submit" class="btn btn-primary">Add</button></td>
+                    <td></td>
                     <td><button class="btn btn-danger" ng-click="delete()">Delete</button></td>
                     <td><button class="btn btn-warning" ng-click="edit()">Edit</button></td>   
                     <td><button class="btn btn-info" ng-click="update()">Update</button></td>
