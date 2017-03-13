@@ -35,27 +35,33 @@ function($scope, books){
   }
 
   // Delete the selected book
-  $scope.delete = function() {  
-   // Holds index to delete from service and immediately update client-side
-   var index;
-   for(var i = 0; i < books.books.length; i++) {
-    if(books.books[i]._id === $scope.SelectedBook._id) {
-      index = i;
-      }
-    } // Passes index, id to service then id to routes to delete from DB
-  books.delete($scope.SelectedBook._id, index); 
-  $scope.SelectedBook = null;
+  $scope.delete = function() {
+    if($scope.SelectedBook === null){
+      window.alert("You have not selected any book yet!");
+    }
+    else {
+      // Holds index to delete from service and immediately update client-side
+      var index;
+      for(var i = 0; i < books.books.length; i++) {
+        if(books.books[i]._id === $scope.SelectedBook._id) {
+          index = i;
+          }
+        } // Passes index, id to service then id to routes to delete from DB
+        books.delete($scope.SelectedBook._id, index); 
+        $scope.SelectedBook = null;
+    }
   }
   // Edit number of books
   $scope.edit = function() { 
-  var index;
-   for(var i = 0; i < books.books.length; i++) {
-    if(books.books[i]._id === $scope.SelectedBook._id) {
-      index = i;
-      }
-    } // Passes index, id to service then id to routes to delete from DB
-  books.edit($scope.SelectedBook._id, index, $scope.numOfBooks); 
-  $scope.SelectedBook = null; 
+    if($scope.SelectedBook === null){
+      window.alert("You have not selected any book yet!");
+    }
+    else {
+      console.log("Editing: "+$scope.SelectedBook._id);
+      console.log(books.edit($scope.SelectedBook._id));
+      //$scope.numOfBook = 
+      
+    }
   };
 
   // Adds book to bottom list until their quantity is ran out

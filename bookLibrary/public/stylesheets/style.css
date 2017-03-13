@@ -18,6 +18,6 @@ li {
   float: left;
 }
 
-.selected li{
+.selected td{
    background-color: yellow;
 }

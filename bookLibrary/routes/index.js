@@ -38,7 +38,6 @@ router.post('/books', function(req, res, next) {
 // Delete selected book from the list by finding by ObjectId which is the unique value assigned
 router.delete('/books/:id', function(req, res, next) {
   var id = req.params.id;
-  console.log("deleting " + id);
 
   Book.remove({_id: new ObjectId(id)}, function(err, result) {
     console.log("Deleted.");
@@ -46,12 +45,12 @@ router.delete('/books/:id', function(req, res, next) {
   });
 });
 
-router.put('/books/:id', function(req, res, next){
+// Retrieving specific book to edit
+router.get('/books/:id', function(req, res, next){
   var id = req.params.id;
-  req.book.edit(function(err, book){
-    if (err) { return next(err); }
-
-    res.json(book);
+  console.log("get for single book:"+ id);
+  Book.findOne({_id: new ObjectId(id)}, function(err, result) {
+    res.send(result);
   });
 });
 

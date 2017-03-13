@@ -17,77 +17,73 @@
     <script type="text/ng-template" id="/home.html">
       <h1>Library Web App</h1>
      
-      <div class="row">
-        <div class="col-sm-12 col-md-20">
-          <div class="panel-group">
-            <div class="panel panel-default">
-              <div class="panel-body">
-                <h3>Library Book List</h3>
-            
-                   <ul ng-repeat="book in books" ng-click="setSelected(book)" ng-class="{ selected: book === SelectedBook}">
-                    <li>
-                      {{ book }}
-                    </li>
-                   </ul>  
-                       
-            </div>
-          </div>
-        </div>
-      </div>
-     </div>
-
-      <div class="col-sm-12 col-md-20">
-        <div class="panel-group">
-          <div class="panel panel-default">
-            <div class="panel-body">    
-              
-              <form ng-submit="add()">
-                <input type="text" placeholder="Title" ng-model="title"></input>
-                <input type="text" placeholder="Name of Author" ng-model="authorName"></input>
-                <input type="text" placeholder="ISBN" ng-model="ISBN"></input>
-                <input type="text" placeholder="Number of Books" ng-model="numOfBooks"></input>
-                <input type="text" placeholder="Date published" ng-model="publishDate"></input>
-                <input type="text" placeholder="Book Category" ng-model="bookCat"></input>
-                <input type="text" placeholder="Number of Books Issued" ng-model="numBooksIssued"></input>
-                <button type="submit" class="btn btn-primary">Add</button>
-              </form>
-
-
-                <button class="btn btn-danger" ng-click="delete()">Delete</button>
-
-
-              <form ng-submit="edit()">
-                <input type="text" placeholder="Number of Books" ng-model="numOfBooks"></input>
-                <button type="submit" class="btn btn-primary">Edit</button>
-              </form>
-
-              <div>
-                {{ SelectedBook.title }}
-              </div>
-        </div>
-      </div>
-     </div>
-    </div>
-
-    <div class="row">
-        <div class="col-sm-12 col-md-20">
-          <div class="panel-group">
-            <div class="panel panel-default">
-              <div class="panel-body">
-                <h3>Library Transaction book List</h3>
-
-                  <ul ng-repeat="book in added track by $index">
-                    <li>
-                      {{ book }}
-                    </li>
-                   </ul>  
+     
+      <div class="panel-group">
+        <div class="panel">
+          <div class="panel-body">
+                
+            <h3>Library Book List</h3>
+              <table class= "table">
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Author Name</th>
+                    <th>ISBN</th>
+                    <th>Number of Books</th>
+                    <th>Date Published</th>
+                    <th>Category</th>
+                    <th>Number of Books Issued</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="book in books" ng-click="setSelected(book)" ng-class="{ selected: book === SelectedBook}">                
+                    <td>{{ book.title }}</td>
+                    <td>{{ book.authorName }}</td>
+                    <td>{{ book.ISBN }}</td>
+                    <td>{{ book.numOfBooks }}</td>
+                    <td>{{ book.publishDate }}</td>
+                    <td>{{ book.bookCat }}</td>
+                    <td>{{ book.numBooksIssued }}</td>                   
+                  </tr> 
                     
-
-            </div>
-          </div>
-        </div>
-        </div>
+                   <tr>
+                    <form ng-submit="add()">
+                      <td><input type="text" placeholder="Title" ng-model="title"></input></td>
+                      <td><input type="text" placeholder="Name of Author" ng-model="authorName"></input></td>
+                      <td><input type="text" placeholder="ISBN" ng-model="ISBN"></input></td>
+                      <td><input type="text" placeholder="Number of Books" ng-model="numOfBooks"></input></td>
+                      <td><input type="text" placeholder="Date published" ng-model="publishDate"></input></td>
+                      <td><input type="text" placeholder="Book Category" ng-model="bookCat"></input></td>
+                      <td><input type="text" placeholder="Number of Books Issued" ng-model="numBooksIssued"></input></td>
+                      <td></td>
+                    </form>
+                  </tr>
+                  <tr>
+                    <td><button type="submit" class="btn btn-primary">Add</button></td>
+                    <td><button class="btn btn-danger" ng-click="delete()">Delete</button></td>
+                    <td><button class="btn btn-warning" ng-click="edit()">Edit</button></td>   
+                    <td><button class="btn btn-info" ng-click="update()">Update</button></td>
+                  </tr>
+                  <tr>
+                    <td>Currently Selected:</td> 
+                  </tr>
+                  <tr>               
+                    <td>{{ SelectedBook.title }}  </td>
+                    <td>{{ SelectedBook.authorName }}</td>
+                    <td>{{ SelectedBook.ISBN }} </td>
+                    <td>{{ SelectedBook.numOfBooks }}</td>
+                    <td>{{ SelectedBook.publishDate }} </td>
+                    <td>{{ SelectedBook.bookCat }}</td>
+                    <td>{{ SelectedBook.numBooksIssued }}</td>                 
+                  </tr>      
+                </tbody>
+              <table>      
       </div>
+    </div>
+  </div>
+    
+
+    
    </script>
 
 

@@ -17,10 +17,9 @@ app.factory('books', ['$http', function($http){
     })
   };
 
-  o.edit = function(id, index, numOfBooks) {
-    return $http.put('/books' + id + '/numOfBooks').success(function(data){
-      o.books[index].numOfBooks = numOfBooks;
-      console.log('edit gets to service');
+  o.edit = function(id) {
+     $http.get('/books/' + id).then(function(res){     
+      return res.data;
     })
   };
 
