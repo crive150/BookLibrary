@@ -12,3 +12,4 @@ How it works:
 9. There is a button on the type right corner for Transaction list which is in a seperate view.
 10. Transaction has the same functionality except delete and can be edited entirely.
 11. The transaction page also has a button to return to the book list page on the top right corner.
+12. Transactions are added automatically when you click return or issue button on the book list page and you have a book selected.
