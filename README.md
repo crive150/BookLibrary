@@ -1,6 +1,6 @@
 # BookLibrary
 Project created using the MEAN stack frameworks.
-How it works:
+How it works: 
 1. Into the empty boxes, type in required text about a book and then click add it add it to the database
 2. Once it has been added, you may select the book by click on its row on the table
 3. Once selected you may click on buttons to interact with it such as edit, update, delete, issue, or return.
