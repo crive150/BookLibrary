@@ -4,10 +4,13 @@
 app.controller('BookCtrl', [
 '$scope',
 'books',
-function($scope, books){
+'transactions',
+function($scope, books, transactions){
   
   $scope.books = books.books;
-  
+  $scope.date = new Date();// Gets today's date
+  $scope.transactions = transactions.transactions;
+
   //transaction: {bookID:'book 1', transDate: '02/14/17', transType: 'return', Date:'02/14/17'}
   // Adds to book to list of books
   $scope.add = function() {
@@ -105,18 +108,133 @@ function($scope, books){
     }
   };
 
-  $scope.issue = function (){
+  $scope.issued = function(){
+    if( $scope.SelectedBook.numOfBooks - $scope.SelectedBook.numBooksIssued === 0){
+      windows.alert("Maximum amount of books have been issued!");
+      return;
+    }
+    else {
+      var index;
+      for(var i = 0; i < books.books.length; i++) {
+        if(books.books[i]._id === $scope.SelectedBook._id) {
+          index = i;
+          }
+      }
+      $scope.SelectedBook.numBooksIssued += 1;
 
+      books.issue($scope.SelectedBook._id, $scope.SelectedBook, index);
+      transactions.createTransaction({ // Transaction is created everytime a book is issued
+        bookID: $scope.SelectedBook.title,
+        transDate: $scope.date,
+        transType: "issued",
+        Date: $scope.date
+      });
+    }
   };
+
+  $scope.returned = function(){
+    if($scope.SelectedBook.numBooksIssued === 0){
+      windows.alert("All the books have been returned!");
+      return;
+    }
+    else {
+      var index;
+      for(var i = 0; i < books.books.length; i++) {
+        if(books.books[i]._id === $scope.SelectedBook._id) {
+          index = i;
+          }
+      }
+      $scope.SelectedBook.numBooksIssued -= 1;
+      
+      books.return($scope.SelectedBook._id, $scope.SelectedBook, index);
+      transactions.createTransaction({ // Transaction is created everytime a book is issued
+        bookID: $scope.SelectedBook.title,
+        transDate: $scope.date,
+        transType: "returned",
+        Date: $scope.date
+      });
+    }
+  };
+
+
 
 }]);
 
 
-// Controller for Transactions list
+/*-------------------------Controller for Transactions list---------------------------*/
 app.controller('TransCtrl', [
 '$scope',
 'transactions',
 function($scope, transactions) {
-  //$scope.transactions = transactions.transactions;
+  
+  $scope.trans = transactions.transactions;
+
+  $scope.addTransaction = function() {
+    transactions.createTransaction({ // Saves book to server
+      bookID: $scope.transaction.bookID,
+      transDate: $scope.transaction.transDate,
+      transType: $scope.transaction.transType,
+      Date: $scope.transaction.Date
+    });
+    $scope.transaction.bookID = '';
+    $scope.transaction.transDate ='';
+    $scope.transaction.transType ='';
+    $scope.transaction.Date ='';
+  };
+
+  $scope.SelectedTrans = null;
+  $scope.setSelectedTransaction = function (SelectedTrans) {
+    $scope.SelectedTrans = SelectedTrans;
+    console.log($scope.SelectedTrans._id);
+  };
+
+  // Edit number of books. This method caputes the book details and places them in the boxes for editing
+  $scope.editTransaction = function() { 
+    if($scope.SelectedTrans == null){
+      window.alert("Please select a transaction before taking this action.");
+    }
+    else {
+      transactions.editTransaction($scope.SelectedTrans._id).then(function(data){
+        $scope.transaction = data;
+      });  
+    }
+  };
+
+// Update method updates the database with the new value for number of books in the text box.
+  $scope.updateTransaction = function() {
+    if($scope.transaction == null) {
+      window.alert("Please select a transaction and then hit edit before hitting update.");
+    }
+    else {
+      // Holds index to modify array from service and immediately update client-side
+        var index;
+        for(var i = 0; i < transactions.transactions.length; i++) {
+          if(transactions.transactions[i]._id === $scope.transaction._id) {
+            index = i;
+            }
+          }
+      transactions.updateTransaction($scope.transaction._id, $scope.transaction ,index);
+      $scope.transaction = null;
+      $scope.SelectedTrans = null;
+    }
+  };
+
+// Controller deleting for transaction was created for testing purposes
+  $scope.deleteTransaction = function() {
+    if($scope.SelectedTrans == null){
+      window.alert("Please select a book before taking this action.");
+      return;
+    }
+    else {
+      var index;
+      for(var i = 0; i < transactions.transactions.length; i++) {
+        if(transactions.transactions[i]._id === $scope.SelectedTrans._id) {
+            index = i;
+          }
+        } // Passes index, id to service then id to routes to delete from DB
+        transactions.deleteTransaction($scope.SelectedTrans._id, index); 
+        $scope.SelectedTrans = null;
+    }
+  };
 
 }]);

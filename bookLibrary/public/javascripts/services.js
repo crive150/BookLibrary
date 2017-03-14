@@ -1,7 +1,7 @@
 // Angular Factories/Services
 // Returns contents of JSON file to the Controller
 
-// Books factory
+// Books Factory
 app.factory('books', ['$http', function($http){
   var o = {
     books: []
@@ -42,10 +42,61 @@ app.factory('books', ['$http', function($http){
     })
   };
 
+  o.issue = function(id ,book, index) {
+    return $http.put('/books/' + id + '/issue', book).success(function(data){
+      })
+  };
+
+  o.return = function(id ,book, index) {
+    return $http.put('/books/' + id + '/issue', book).success(function(data){
+      })
+  };
+
   return o;
 }]);
 
-// Transactions factory
+/*-------------------------Transactions Factory-------------------------*/
 app.factory('transactions', ['$http', function($http){
+  var o = {
+    transactions: []
+  };
 
+o.getAllTransactions = function() {
+    return $http.get('/transactions').success(function(data) {
+      console.log(data);
+      angular.copy(data, o.transactions);
+    })
+  };
+
+  // Creating a transaction
+  o.createTransaction = function(transaction) { 
+    return $http.post('/transactions', transaction).success(function(data) {
+      console.log(data);
+      o.transactions.push(data);
+    })
+  };
+
+  o.deleteTransaction = function(id, index) { 
+    return $http.delete('/transactions/' + id).success(function(data){
+      o.transactions.splice(index, 1);
+    })
+  };
+
+  // Begins the edit on the desired book
+  o.editTransaction = function(id) {
+    console.log("Editing transaction with id:" + id);
+     return $http.get('/transactions/' + id).then(function(res){     
+      return res.data;
+    })
+  };
+
+  // Complete change by changing the value through the route
+  o.updateTransaction = function(id, transaction, index) {
+    console.log("Updating transaction in factory");
+    return $http.put('/transactions/' + id, transaction).success(function(res){
+      o.transactions[index] = transaction;
+    })
+  };
+
+  return o;
 }]);

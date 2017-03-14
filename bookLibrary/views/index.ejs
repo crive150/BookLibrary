@@ -12,12 +12,13 @@
    <div>
     <ui-view></ui-view>
   </div>
-
-
+    <!-- The view for the Book list -->
     <script type="text/ng-template" id="/home.html">
       <h1>Library Web App</h1>
-     
-     <a href="/transactions"><button type="submit" class="btn btn-info"> Transactions list</button></a>
+    
+    <!-- Button which takes you to the Transaction List -->
+     <a href="#/transactions"><button type="submit" class="btn btn-info"> Transactions list</button></a>
+
       <div class="panel-group">
         <div class="panel">
           <div class="panel-body">
@@ -43,7 +44,7 @@
                     <td>{{ book.numOfBooks }}</td>
                     <td>{{ book.publishDate }}</td>
                     <td>{{ book.bookCat }}</td>
-                    <td>{{ book.numBooksIssued }}</td>                   
+                    <td>{{ book.numBooksIssued }}</td>                  
                   </tr>  
                    <tr> <!-- Row below is for input fields for adding a book -->
                       <td><input class="form-control" placeholder="Title" ng-model="book.title"></input></td>
@@ -62,7 +63,9 @@
                     <td><button class="btn btn-warning" ng-click="edit()">Edit</button><button class="btn btn-info" ng-click="update()">Update</button></td>
                   </tr>
                   <tr>
+                    <td><button ng-click="returned()" class="btn btn-primary">Return</button></td>
                     <td>Currently Selected:</td> 
+                    <td><button ng-click="issued()" class="btn btn-danger">Issue</button></td>    
                   </tr>
                   <tr>               
                     <td>{{ SelectedBook.title }}  </td>
@@ -80,12 +83,59 @@
     </div>  
    </script>
 
-   <script type="text/ng-template" id="/transactions.html">
+   <!-- The view for the Transactions list -->
+
+   <script type="text/ng-template" id="/transactions.html" ng-controller="TransCtrl">
+
+   <!-- Button which takes you back to the Book List -->
+   <a href="#/home"><button type="submit" class="btn btn-info"> Book List</button></a>
+
     <h3>Transactions list page</h3>
-    <table class="table">
+    <div class="panel-group" >
+      <div class="panel">
+        <div class="panel-body">
 
-    </table>
-
+        <table class="table">
+          <thead>
+            <tr>
+              <th>bookID</th>
+              <th>Transaction Date</th>
+              <th>Transaction Type</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="tran in trans" ng-click="setSelectedTransaction(tran)" ng-class="{ selected: tran === SelectedTrans}">                
+              <td>{{ tran.bookID }}</td>
+              <td>{{ tran.transDate }}</td>
+              <td>{{ tran.transType }} </td>
+              <td>{{ tran.Date }}</td>                     
+            </tr>  
+            <tr> <!-- Row below is for input fields for adding a transaction -->
+              <td><input class="form-control" placeholder="bookID" ng-model="transaction.bookID"></input></td>
+              <td><input class="form-control" placeholder="Transaction Date" ng-model="transaction.transDate"></input></td>
+              <td><input class="form-control" placeholder="Transaction Type" ng-model="transaction.transType"></input></td>
+              <td><input class="form-control" placeholder="Date" ng-model="transaction.Date"></input></td>
+              <td><button ng-click="addTransaction()" class="btn btn-primary">Add</button></td>
+            </tr>
+            <tr>
+              <td> Currently Selected: </td>
+              <td>
+                <button class="btn btn-warning" ng-click="editTransaction()">Edit</button>
+                <button class="btn btn-info" ng-click="updateTransaction()">Update</button>
+              </td> 
+            </tr>
+            <tr>               
+              <td>{{ SelectedTrans.bookID }}</td>
+              <td>{{ SelectedTrans.transDate }}</td>
+              <td>{{ SelectedTrans.transType }} </td>
+              <td>{{ SelectedTrans.Date }}</td>                
+            </tr>                 
+          </tbody>
+        </table>
+       </div>
+      </div>
+    </div>
    </script>
 
 

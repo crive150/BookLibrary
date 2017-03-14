@@ -10,6 +10,7 @@ module.exports = router;
 
 var mongoose = require('mongoose'); // Importing Mongoose
 var ObjectId = require('mongoose').Types.ObjectId;
+
 var Book = mongoose.model('Book');
 var Transaction = mongoose.model('Transaction');
 
@@ -26,7 +27,6 @@ router.get('/books', function(req, res, next) {
 
  // Creating book object
 router.post('/books', function(req, res, next) {
-  
   var book = new Book(req.body);
   book.save(function(err, book){
     if(err){ return next(err); }
@@ -35,17 +35,6 @@ router.post('/books', function(req, res, next) {
   });
 });
 
-
-// For editing the number of books of a selected book in the database
-router.put('/books/:id', function(req, res, next){
-  var id = req.params.id;
-  console.log("Book being edited in express route: "+ req.body.numOfBooks);
-  Book.findOneAndUpdate({_id: new ObjectId(id)},{$set:{numOfBooks: req.body.numOfBooks}},{new : true},
-  function(err, result) {
-    if(err){ return next(err); }
-    res.json(result);
-  });
-});
 
 // Delete selected book from the list by finding by ObjectId which is the unique value assigned
 router.delete('/books/:id', function(req, res, next) {
@@ -66,26 +55,88 @@ router.get('/books/:id', function(req, res, next){
   });
 });
 
-//pre-loading post objects
-router.param('book', function(req, res, next, id){
-  var query = Book.findById(id);
+// For editing the number of books of a selected book in the database
+router.put('/books/:id', function(req, res, next){
+  var id = req.params.id;
 
-  query.exec(function(err, book){
-    if (err) { return next (err); }
-    if(!book) { return next(new Error('can\'t find book')); }
-
-    req.book = book;
-    return next();
+  Book.findOneAndUpdate({_id: new ObjectId(id)},{$set:{numOfBooks: req.body.numOfBooks}},{new : true},
+  function(err, result) {
+    if(err){ return next(err); }
+    res.json(result);
   });
 });
+
+// For increasing number of books issued
+router.put('/books/:id/issue', function(req, res, next){
+  var id = req.params.id;
+  console.log("Book being ISSUED in express route: "+ req.body.numBooksIssued);
+  Book.findOneAndUpdate({_id: new ObjectId(id)},{$set:{numBooksIssued: req.body.numBooksIssued}},{new : true},
+  function(err, result) {
+    if(err){ return next(err); }
+    res.json(result);
+  });
+});
+
+// Returning books For decreasing number of books issued by returning them
+router.put('/books/:id/return', function(req, res, next){
+  var id = req.params.id;
+  console.log("Book being RETURNED in express route: "+ req.body.numBooksIssued);
+  Book.findOneAndUpdate({_id: new ObjectId(id)},{$set:{numBooksIssued: req.body.numBooksIssued}},{new : true},
+  function(err, result) {
+    if(err){ return next(err); }
+    res.json(result);
+  });
+});
+
+/*----------------------------------------Transaction routes------------------------------------------*/ 
 
 // Creating GET route for retrieving transactions, returns JSON list containing all transactions
-// Use express get()  method to define URL for route (/posts)
 router.get('/transactions', function(req, res, next) { 
-  Transaction.find(function(err, transactions){  // Query database for all transactions
-    if(err){ return next(err); } // Pass error to error-handling function
+  Transaction.find(function(err, transactions){ 
+    if(err){ return next(err); } 
 
-    res.json(transactions); // Send retrieved transactions back to client
+    res.json(transactions); 
   });
 });
 
+// Creating Transaction Object
+router.post('/transactions', function(req, res, next) {
+  
+  var transaction = new Transaction(req.body);
+  transaction.save(function(err, transaction){
+    if(err){ return next(err); }
+    console.log("New transaction created");
+    res.json(transaction);
+  });
+});
+
+// Delete selected book from the list by finding by ObjectId which is the unique value assigned
+router.delete('/transactions/:id', function(req, res, next) {
+  var id = req.params.id;
+
+  Transaction.remove({_id: new ObjectId(id)}, function(err, result) {
+    console.log("Deleted transaction with id: " + id);
+    res.send(result);
+  });
+});
+
+// Retrieving specific transaction to edit
+router.get('/transactions/:id', function(req, res, next){
+  var id = req.params.id;
+  console.log("get for transaction :"+ id);
+  Transaction.findOne({_id: new ObjectId(id)}, function(err, result) {
+    res.send(result);
+  });
+});
+
+// For editing the number of books of a selected book in the database
+router.put('/transactions/:id', function(req, res, next){
+  var id = req.params.id;
+
+  Transaction.findOneAndUpdate({_id: new ObjectId(id)},{$set:{bookID: req.body.bookID, transDate: req.body.transDate,
+    transType: req.body.transType, Date: req.body.Date}},{new : true},
+  function(err, result) {
+    if(err){ return next(err); }
+    res.json(result);
+  });
+});

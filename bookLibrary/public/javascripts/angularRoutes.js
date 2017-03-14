@@ -22,11 +22,11 @@ app.config([
                   url: '/transactions',
                   templateUrl: '/transactions.html',
                   controller: 'TransCtrl',
-                  // resolve: { // Resolve is used because anytime home state is entered, it queries for all books
-                  //    transactionPromise: ['transactions', function(books) { // from the backend before the state finished loading.
-                  //       return transactions.getAll();
-                  //   }]
-                  // }
-                })                   
+                  resolve: { // Resolve is used because anytime home state is entered, it queries for all books
+                     transactionPromise: ['transactions', function(transactions) { // from the backend before the state finished loading.
+                        return transactions.getAllTransactions();
+                    }]
+                  }
+                });                   
       $urlRouterProvider.otherwise('home');
 }]);

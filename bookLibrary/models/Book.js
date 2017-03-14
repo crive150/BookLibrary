@@ -10,9 +10,4 @@ var BookSchema = new mongoose.Schema({
     numBooksIssued: {type: Number, default: 0, min: 0},
 });
 
-BookSchema.methods.edit = function(cb) {
-    this.numBooksIssued = cb;
-    this.save(cb);
-}
-
 mongoose.model('Book', BookSchema);
